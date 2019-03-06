@@ -1,0 +1,148 @@
+---
+swagger: "2.0"
+info:
+  description: "uber + google "
+  version: "1.0.0"
+  title: "Swagger Petstore"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "apiteam@swagger.io"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+basePath: "/v2"
+tags:
+- name: "Uber"
+  description: "obtencion de tiempo estimado de viaje a travez de lon y lat de inicio\
+    \ y lon y lat de final"
+  externalDocs:
+    description: "Find out more"
+    url: "https://developer.uber.com/docs/riders/references/api/v1.2/requests-estimate-post"
+- name: "Google"
+  description: "obtencion de lon y lat a travez de direccion"
+- name: "user"
+  description: "consultar tiempo estimado"
+  externalDocs:
+    description: "Find out more about our store"
+    url: "http://swagger.io"
+schemes:
+- "https"
+- "http"
+
+paths:
+  /get_latlon:
+    post:
+      tags:
+      - "Google"
+      summary: "obtener coordenadas"
+      description: ""
+      operationId: "get_latlon_get"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "hello"
+        required: true
+        schema:
+          $ref: "#/definitions/get_lat_lon"
+      responses:
+        200:
+          description: "OK"
+      x-swagger-router-controller: "swagger_server.controllers.google_controller"
+  /get_time:
+    post:
+      tags:
+      - "Uber"
+      summary: "obtener tiempo estimado con las locaciones"
+      description: ""
+      operationId: "get_time_post"
+      consumes:
+      - "application/json   "
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "hello"
+        required: true
+        schema:
+          $ref: "#/definitions/estimated_time"
+      responses:
+        200:
+          description: "OK"
+      x-swagger-router-controller: "swagger_server.controllers.uber_controller"
+  /user:
+    post:
+      tags:
+      - "User"
+      summary: "uso de los 2 microservices"
+      description: ""
+      operationId: "get_estimated"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "hello"
+        required: true
+        schema:
+          $ref: "#/definitions/get_lat_lon"
+      responses:
+        200:
+          description: "OK"
+      x-swagger-router-controller: "swagger_server.controllers.user_controller"
+      
+definitions:
+  estimated_time:
+    type: "object"
+    properties:
+      longitud_inicial:
+        type: "number"
+        
+      latitud_inicial:
+        type: "number"
+        
+      longitud_final:
+        type: "number"
+        
+      latitud_final:
+        type: "number"
+        
+    example:
+      longitud_inicial: -122.411
+      latitud_inicial: 37.770
+      longitud_final: -122.405
+      latitud_final: 37.791
+  get_lat_lon:
+    type: "object"
+    properties:
+      address:
+        type: "string"
+      number:
+        type: "string"
+      comuna:
+        type: "string"
+      ciudad:
+        type: "string"
+      pais:
+        type: "string"
+    example:
+      Inicio:
+        address: "apoquindo"
+        number: "4820"
+        comuna: "las condes"
+        ciudad: "santiago"
+        pais: "chile"
+      Destino:
+        address: "Antonio varas"
+        number: "880"
+        comuna: "providencia"
+        ciudad: "santiago"
+        pais: "chile"
+        
+      
